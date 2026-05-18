@@ -1,0 +1,66 @@
+# FaslBot Implementation Plan
+
+This plan breaks down the construction of FaslBot, an autonomous agricultural market intelligence agent, into sequential mini-steps as requested. We will proceed one step at a time, ensuring each checkpoint passes before moving to the next.
+
+## User Review Required
+Please review this phased approach. Since this is a large, full-stack project (Python/FastAPI backend + Flutter mobile app), we will execute the steps sequentially. 
+Once you approve this plan, I will begin with **Step 1**, present the results, and wait for your go-ahead to proceed to the next step, honoring the "one mini step at one time" instruction.
+
+## Open Questions
+- **Social Media Integration**: You mentioned wanting to pull data from Facebook groups, Twitter, and Instagram. While this is an incredible feature for a real-world product, these platforms have very strict anti-scraping protections. Official APIs are either extremely locked down (Facebook/Instagram) or very expensive (Twitter). 
+  - *Proposal for Hackathon*: We can add a specialized "Social Media Scraper" using a 3rd-party tool (like Apify) or focus on easier platforms like public Telegram groups. However, to guarantee your demo doesn't crash, I highly recommend we stick to the reliable real-time sources first (PBS, WFP, RSS news feeds) and add social media as an "experimental feature" at the end. How would you like to balance this?
+- Do you have a Firebase project and Gemini API key ready for use, or should we continue with mock functionality where possible?
+- Do you have Flutter installed in this environment (`/home/madiha/Documents/Projects/AI Seekho Hackathon`) to run and verify the mobile app later?
+
+## Proposed Changes
+
+### Step 1: Project Skeleton & Environment Setup (Sections 2 & 3)
+- Create the full project directory structure (`faslbot/backend`, `faslbot/mobile`, etc.).
+- Generate `scripts/setup.sh`.
+- Generate `backend/requirements.txt` and `backend/.env.example`.
+- *Checkpoint*: Project structure exists, ready for environment initialization.
+
+### Step 2: Configuration, Data Processor, & Seed Data (Sections 10 & 9)
+- Generate `backend/config.py`.
+- Generate `backend/data/processors/price_processor.py`.
+- Generate 49 realistic 2026 Pakistani commodity price records in `backend/data/seeds/sample_prices.json`.
+- *Checkpoint*: Processor logic in place and seed data verified.
+
+### Step 3: Backend Data Ingestion (Section 4)
+- Generate `pbs_fetcher.py` (Real PBS website data).
+- Generate `wfp_fetcher.py` (Real WFP API data).
+- Generate `rss_fetcher.py` (Real Dawn/ARY news data).
+- *(Optional based on your feedback)* Generate `social_scraper.py` (Proof-of-concept for Twitter/Telegram using a 3rd party API, if requested).
+- *Checkpoint*: Fetchers correctly configured with fallbacks.
+
+### Step 4: Backend Services Layer (Section 6)
+- Generate `gemini_service.py`.
+- Generate `sms_service.py`.
+- Generate `firebase_service.py`.
+- *Checkpoint*: Services ready for agent consumption.
+
+### Step 5: Backend Agent Pipeline (Section 5)
+- Generate the 6 distinct agents: Ingestor, Insight Extractor, Impact Analyst, Action Planner, Action Executor, and Audit Logger.
+- Generate `orchestrator.py` to link them using LangGraph.
+- *Checkpoint*: Agent state machine complete.
+
+### Step 6: FastAPI Routes (Section 7)
+- Generate `main.py`.
+- Generate router endpoints for pipeline execution, insights, actions, and logs.
+- *Checkpoint*: API server ready to accept requests.
+
+### Step 7: Flutter Mobile App Setup (Section 8)
+- Generate `mobile/pubspec.yaml` and initialize Flutter configurations.
+- Generate core theme and screens (Home, Insight, Action, Execution, Trace).
+- *Checkpoint*: Complete Flutter UI logic built.
+
+### Step 8: Final Polish (Sections 11, 12, 13)
+- Provide Firebase setup documentation.
+- Generate `docs/README.md`.
+- Provide the demo script as an artifact.
+- *Checkpoint*: Project fully ready for hackathon submission.
+
+## Verification Plan
+- For Python code, I will run basic syntax checks and verification scripts where applicable.
+- For each step, I will create a `task.md` checklist and mark it off.
+- Before moving to the next step, I will summarize what was accomplished and ensure it meets the requirements of the blueprint's checkpoint.

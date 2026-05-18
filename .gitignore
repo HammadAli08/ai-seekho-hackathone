@@ -1,0 +1,52 @@
+# Ignore the huge external Flutter engine checkout
+flutter/
+
+# Ignore local kilocode configurations
+.kilocode/
+
+# Python caching and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Flutter/Dart build files (specific to Flutter apps)
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+faslbot.iml
+
+# Credentials and secrets
+.env
+.env.local
+.env.*.local
+serviceAccountKey.json
+firebase-config.js
+
+# IDEs and editors
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and databases
+*.log
+logs/
+scratch/
+*.db
+*.sqlite
