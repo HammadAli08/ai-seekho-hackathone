@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: faslbot-backend
+    env: python
+    repo: https://github.com/HammadAli08/ai-seekho-hackathone
+    branch: main
+    rootDir: AI-Seekho-Hackathon/AI Seekho Hackathon/faslbot/backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-2.0-flash
+      - key: FIREBASE_PROJECT_ID
+        sync: false
+      - key: FIREBASE_SERVICE_ACCOUNT_PATH
+        value: ./serviceAccountKey.json
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_FROM_NUMBER
+        sync: false
+      - key: SMS_DEMO_TO_NUMBER
+        sync: false
+      - key: SMS_MODE
+        value: mock
+      - key: LOG_LEVEL
+        value: INFO
+      - key: PRICE_REFRESH_INTERVAL
+        value: "3600"
+      - key: NEWS_REFRESH_INTERVAL
+        value: "1800"
+    secretFiles:
+      - key: serviceAccountKey.json
+        path: ./serviceAccountKey.json
