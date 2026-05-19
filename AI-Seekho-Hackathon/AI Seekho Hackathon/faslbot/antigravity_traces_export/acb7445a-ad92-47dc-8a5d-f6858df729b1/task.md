@@ -1,0 +1,11 @@
+- [x] Update `backend/requirements.txt` with `gunicorn`.
+- [ ] Create `backend/Dockerfile` with `build-essential`, `gunicorn`, and proper layers.
+- [ ] Create `backend/.dockerignore`.
+- [ ] Create `mobile/Dockerfile` for Flutter Web -> Nginx multi-stage build.
+- [ ] Create `mobile/nginx.conf` for reverse proxying `/api/` to the backend.
+- [ ] Create `mobile/.dockerignore`.
+- [ ] Update `mobile/lib/config/api_config.dart` to use relative path `/api/v1` so Nginx reverse proxy can handle it.
+- [ ] Create `docker-compose.yml` with `app_data` volumes, `:ro` mounts, and `depends_on`.
+- [ ] Create `.env.example` in root.
+- [ ] Create `scripts/export_project.sh` and `scripts/import_project.sh` with `gzip` and architecture instructions.
+- [ ] Create `README.docker.md` with complete documentation.

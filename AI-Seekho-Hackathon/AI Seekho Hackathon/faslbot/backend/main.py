@@ -39,13 +39,17 @@ app.include_router(chat_router)
 
 
 @app.get("/")
-def health_check():
+def root_check():
     return {
         "status": "healthy",
         "service": "faslbot_backend",
         "mode": settings.SMS_MODE,
         "gemini_model": settings.GEMINI_MODEL
     }
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 
 @app.post("/api/v1/trigger-pipeline")

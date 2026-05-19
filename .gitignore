@@ -48,3 +48,5 @@ desktop.ini
 *.log
 logs/
 scratch/
+*.db-shm
+*.db-wal
