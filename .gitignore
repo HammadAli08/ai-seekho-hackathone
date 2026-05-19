@@ -48,5 +48,3 @@ desktop.ini
 *.log
 logs/
 scratch/
-*.db
-*.sqlite
