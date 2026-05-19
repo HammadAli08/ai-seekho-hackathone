@@ -5,7 +5,7 @@ services:
     repo: https://github.com/HammadAli08/ai-seekho-hackathone
     branch: main
     rootDir: AI-Seekho-Hackathon/AI Seekho Hackathon/faslbot/backend
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install uv && uv pip install --system -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: GOOGLE_API_KEY
