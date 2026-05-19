@@ -3,10 +3,10 @@ from pathlib import Path
 
 
 class Settings(BaseSettings):
-    GOOGLE_API_KEY: str
+    GOOGLE_API_KEY: str = ""
     GEMINI_MODEL: str = "gemini-2.0-flash"
     FIREBASE_SERVICE_ACCOUNT_PATH: str = "./serviceAccountKey.json"
-    FIREBASE_PROJECT_ID: str
+    FIREBASE_PROJECT_ID: str = ""
     TWILIO_ACCOUNT_SID: str = ""
     TWILIO_AUTH_TOKEN: str = ""
     TWILIO_FROM_NUMBER: str = ""
