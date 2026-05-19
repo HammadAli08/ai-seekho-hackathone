@@ -6,9 +6,9 @@ feedparser==6.0.11
 pandas
 openpyxl==3.1.5
 pydantic==2.7.1
-langgraph
-langchain-google-genai
-google-generativeai==0.5.4
+langgraph>=0.1.0
+langchain-google-genai>=1.0.0
+google-generativeai>=0.5.4
 firebase-admin==6.5.0
 apscheduler==3.10.4
 twilio==9.1.1
@@ -17,8 +17,8 @@ rich==13.7.1
 # --- Chat Agent Dependencies ---
 numpy
 python-dateutil
-openai
-langchain
-langchain-community
+openai>=1.0.0
+langchain>=0.2.0
+langchain-community>=0.2.0
 duckduckgo-search
 slowapi
