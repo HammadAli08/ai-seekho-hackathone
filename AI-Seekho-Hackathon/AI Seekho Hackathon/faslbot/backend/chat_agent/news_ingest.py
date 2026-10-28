@@ -168,7 +168,7 @@ def _normalize_item(item: dict[str, Any], source_url: str = "") -> dict[str, Any
         _first_present(item, ["title", "headline", "name"])
     )
     description = _clean_text(
-        _first_present(item, ["description", "summary", "content", "text"])
+        _first_present(item, ["description", "summary", "content", "text", "snippet"])
     )
     if not title and not description:
         return None
@@ -183,7 +183,7 @@ def _normalize_item(item: dict[str, Any], source_url: str = "") -> dict[str, Any
     url = _clean_text(_first_present(item, ["url", "link"]))
     date_value = _first_present(
         item,
-        ["publishedAt", "published", "scrapedAt", "createdAt", "date"],
+        ["publishedAt", "published", "published_at", "scrapedAt", "createdAt", "date"],
     )
     
     # Try to parse date; if still null, attempt extraction from title/content
@@ -228,11 +228,13 @@ def _apify_actor_url(actor_id: str, token: str) -> str:
 
 
 def _default_actor_input(urls: list[str], max_items: int) -> dict[str, Any]:
-    """Build input for misceres/news-scraper actor."""
+    """Build input for johnvc/GoogleNewsAPI: one Pakistan news search per filter keyword."""
     return {
-        "startUrls": [{"url": u} for u in urls],
-        "maxArticlesPerCrawl": max_items,
-        "onlyNewArticles": False,
+        "queries": [f"{kw} Pakistan" for kw in NEWS_FILTER_KEYWORDS],
+        "gl": "pk",
+        "hl": "en",
+        "time_range": "week",
+        "max_pages": 1,
     }
 
 
@@ -277,7 +279,7 @@ def call_apify_news_actor(
         raise RuntimeError("APIFY_TOKEN is missing")
 
     resolved_urls = urls or PAKISTANI_NEWS_SOURCES
-    resolved_actor_id = actor_id or get_env("APIFY_ACTOR_ID") or "misceres/news-scraper"
+    resolved_actor_id = actor_id or get_env("APIFY_ACTOR_ID") or "johnvc/GoogleNewsAPI"
     payload = _resolve_actor_input(resolved_urls)
     body = json.dumps(payload).encode("utf-8")
     request = urllib.request.Request(
@@ -303,11 +305,16 @@ def call_apify_news_actor(
     for item in data:
         if not isinstance(item, dict):
             continue
-        title = _clean_text(_first_present(item, ["title", "headline", "name"]))
-        description = _clean_text(_first_present(item, ["description", "summary", "content", "text"]))
-        combined = " ".join(filter(None, [title, description]))
-        if _contains_allowed_keywords(combined):
-            results.append((item, ""))
+        # GoogleNewsAPI returns one row per results page, with the articles in news_results
+        articles = item.get("news_results")
+        for article in articles if isinstance(articles, list) else [item]:
+            if not isinstance(article, dict):
+                continue
+            title = _clean_text(_first_present(article, ["title", "headline", "name"]))
+            description = _clean_text(_first_present(article, ["description", "summary", "content", "text", "snippet"]))
+            combined = " ".join(filter(None, [title, description]))
+            if _contains_allowed_keywords(combined):
+                results.append((article, ""))
     return results
 
 
@@ -349,7 +356,7 @@ def ingest_news(
     discarded_count = 0
     for item_data, src in items:
         title = _clean_text(_first_present(item_data, ["title", "headline", "name"]))
-        description = _clean_text(_first_present(item_data, ["description", "summary", "content", "text"]))
+        description = _clean_text(_first_present(item_data, ["description", "summary", "content", "text", "snippet"]))
         if _contains_allowed_keywords(" ".join(filter(None, [title, description]))):
             filtered.append((item_data, src))
         else:
@@ -358,7 +365,7 @@ def ingest_news(
     inserted = store_news_items(filtered)
     result = {
         "source": "apify_headline_news_scraper",
-        "actor_id": actor_id or get_env("APIFY_ACTOR_ID") or "misceres/news-scraper",
+        "actor_id": actor_id or get_env("APIFY_ACTOR_ID") or "johnvc/GoogleNewsAPI",
         "fetched": len(items) + 0,
         "inserted": inserted,
         "discarded": discarded_count,
